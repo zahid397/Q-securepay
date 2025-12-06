@@ -1,11 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  root: '.',  // ensure Vercel finds index.html
+  root: ".", // tells Vite this folder has index.html
   build: {
-    outDir: 'dist'
-  }
-})
+    outDir: "dist",
+    emptyOutDir: true,
+    rollupOptions: {
+      input: "./index.html", // <-- main fix
+    },
+  },
+});
