@@ -1,17 +1,17 @@
+// SecurityRadar.jsx
 import React from "react";
 import {
+  Radar,
   Chart as ChartJS,
   RadialLinearScale,
   PointElement,
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
 } from "chart.js";
 
-import { Radar } from "react-chartjs-2";
-
-// REQUIRED for Chart.js
+// Register chart.js components
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -21,51 +21,60 @@ ChartJS.register(
   Legend
 );
 
-const SecurityRadar = ({ risk = 50 }) => {
-  // Sequential Danger Values
-  const seq1 = risk;          // Suspicious transfers
-  const seq2 = risk * 0.8;    // Volume spike
-  const seq3 = risk * 0.6;    // Wallet age
-  const seq4 = risk * 0.4;    // History score
-  const seq5 = 100 - risk;    // Reputation inverse
-
+const SecurityRadar = ({ risk }) => {
   const data = {
     labels: [
-      "Transfers",
-      "Volume Spike",
       "Wallet Age",
-      "History",
-      "Reputation"
+      "Transaction Volume",
+      "History Cleanliness",
+      "Network Reputation",
+      "Fraud Pattern Match",
+      "Velocity Risk",
     ],
     datasets: [
       {
-        label: "Threat Radar",
-        data: [seq1, seq2, seq3, seq4, seq5],
+        label: "Threat Level",
+        data: [
+          risk * 0.6,
+          risk * 0.8,
+          risk * 0.4,
+          risk * 0.9,
+          risk * 0.7,
+          risk * 0.5,
+        ],
         backgroundColor: "rgba(0, 255, 255, 0.25)",
-        borderColor: "cyan",
+        borderColor: "#00eaff",
         borderWidth: 2,
-        pointBackgroundColor: "cyan",
-        pointRadius: 3
-      }
-    ]
+        pointBackgroundColor: "#00eaff",
+      },
+    ],
   };
 
   const options = {
-    maintainAspectRatio: false,
     scales: {
       r: {
-        min: 0,
-        max: 100,
-        ticks: { display: false },
-        grid: { color: "rgba(0,255,255,0.1)" },
-        angleLines: { color: "rgba(0,255,255,0.15)" }
-      }
+        angleLines: { color: "#003b45" },
+        grid: { color: "#004f5e" },
+        pointLabels: {
+          color: "#b9faff",
+          font: { size: 11 },
+        },
+        suggestedMin: 0,
+        suggestedMax: 100,
+      },
     },
-    plugins: { legend: { display: false } }
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#001d24",
+        titleColor: "#00eaff",
+        bodyColor: "#fff",
+      },
+    },
   };
 
   return (
-    <div style={{ width: "100%", height: "250px" }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <Radar data={data} options={options} />
     </div>
   );
