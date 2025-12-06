@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import TransferForm from "./TransferForm";
+import SecurityRadar from "./SecurityRadar";   // ⭐ Radar Graph Component
+import { motion } from "framer-motion";        // ⭐ Smooth animation
 
 const App = () => {
   const [logs, setLogs] = useState([]);
@@ -7,42 +9,69 @@ const App = () => {
 
   const addLog = (message, type = "info") => {
     setLogs((prev) => [...prev, { message, type }]);
+
+    // Auto-update risk score if message contains number
+    if (message.includes("Score")) {
+      const value = parseInt(message.match(/\d+/)?.[0] || "0");
+      setRiskScore(value);
+    }
   };
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Q-SecurePay /// Terminal v1.0</h1>
+      {/* TITLE */}
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={styles.title}
+      >
+        Q-SecurePay /// Terminal v1.0
+      </motion.h1>
+
       <p style={styles.subtitle}>Blockchain Security Gateway</p>
 
       <div style={styles.grid}>
-        {/* ================= Left Panel ================ */}
-        <div style={styles.leftPanel}>
-          <TransferForm
-            addLog={(msg, type) => {
-              addLog(msg, type);
+        {/* ================= LEFT: TRANSFER PANEL ================= */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.leftPanel}
+        >
+          <TransferForm addLog={addLog} />
+        </motion.div>
 
-              // auto update risk score if message contains risk
-              if (msg.includes("Score")) {
-                const s = parseInt(msg.match(/\d+/)[0]);
-                setRiskScore(s);
-              }
-            }}
-          />
-        </div>
-
-        {/* ================= Right Panel (Dashboard) ================ */}
-        <div style={styles.rightPanel}>
-          {/* RISK SCORE BOX */}
+        {/* ================= RIGHT: DASHBOARD ================= */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          style={styles.rightPanel}
+        >
+          {/* === RISK SCORE BOX === */}
           <div style={styles.riskBox}>
             <h3 style={styles.riskTitle}>RISK SCORE</h3>
-            <p style={styles.riskValue}>{riskScore}</p>
+
+            {/* Smooth Number Animation */}
+            <motion.p
+              key={riskScore}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              style={styles.riskValue}
+            >
+              {riskScore}
+            </motion.p>
 
             {/* Progress Bar */}
             <div style={styles.progressWrapper}>
-              <div
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${riskScore}%` }}
+                transition={{ duration: 0.5 }}
                 style={{
                   ...styles.progressBar,
-                  width: `${riskScore}%`,
                   background:
                     riskScore < 30
                       ? "#00ff9c"
@@ -50,7 +79,7 @@ const App = () => {
                       ? "#ffd500"
                       : "#ff4d4d",
                 }}
-              ></div>
+              ></motion.div>
             </div>
 
             <p style={styles.confidenceText}>
@@ -63,7 +92,13 @@ const App = () => {
             </p>
           </div>
 
-          {/* System Status */}
+          {/* === RADAR CHART === */}
+          <div style={styles.chartCard}>
+            <h3 style={styles.cardTitle}>Threat Radar</h3>
+            <SecurityRadar risk={riskScore} />
+          </div>
+
+          {/* === SYSTEM STATUS === */}
           <div style={styles.statusCard}>
             <h3 style={styles.cardTitle}>System Status</h3>
             <p>Node Sync: 99.4%</p>
@@ -72,7 +107,7 @@ const App = () => {
             <p>Uptime: 48h 22m</p>
           </div>
 
-          {/* Alerts Log */}
+          {/* === SECURITY LOGS === */}
           <div style={styles.alertBox}>
             <h3 style={styles.cardTitle}>Security Logs</h3>
 
@@ -94,119 +129,10 @@ const App = () => {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 };
 
 export default App;
-
-// =============================
-//      STYLES (Cyber UI)
-// =============================
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "#07080F",
-    color: "#E8F7FF",
-    fontFamily: "'JetBrains Mono', monospace",
-    padding: "35px",
-  },
-  title: {
-    textAlign: "center",
-    fontSize: "2.8rem",
-    color: "#00eaff",
-    textShadow: "0 0 15px #00eaff",
-    marginBottom: "10px",
-  },
-  subtitle: {
-    textAlign: "center",
-    opacity: 0.6,
-    marginBottom: "40px",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "30px",
-  },
-
-  /* Left Panel (Transfer) */
-  leftPanel: {
-    background: "rgba(0, 20, 30, 0.45)",
-    border: "1px solid #003c4d",
-    borderRadius: "12px",
-    padding: "20px",
-    boxShadow: "0 0 20px rgba(0,255,255,0.15)",
-  },
-
-  /* Right Panel Dashboard */
-  rightPanel: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-  },
-
-  /* RISK BOX */
-  riskBox: {
-    background: "rgba(0, 20, 30, 0.5)",
-    border: "1px solid #004d61",
-    borderRadius: "10px",
-    padding: "20px",
-  },
-  riskTitle: {
-    fontSize: "1.3rem",
-    color: "#00eaff",
-    marginBottom: "10px",
-  },
-  riskValue: {
-    fontSize: "3.5rem",
-    textAlign: "center",
-    textShadow: "0 0 10px cyan",
-  },
-  progressWrapper: {
-    background: "#00151c",
-    height: "10px",
-    width: "100%",
-    borderRadius: "4px",
-    marginTop: "10px",
-  },
-  progressBar: {
-    height: "100%",
-    borderRadius: "4px",
-  },
-  confidenceText: {
-    marginTop: "10px",
-    textAlign: "center",
-    opacity: 0.7,
-  },
-
-  /* STATUS CARD */
-  statusCard: {
-    background: "rgba(0, 20, 30, 0.5)",
-    border: "1px solid #004d61",
-    borderRadius: "10px",
-    padding: "20px",
-  },
-  cardTitle: {
-    fontSize: "1.3rem",
-    color: "#00eaff",
-    marginBottom: "10px",
-  },
-
-  /* ALERT BOX */
-  alertBox: {
-    background: "rgba(0, 20, 30, 0.5)",
-    border: "1px solid #004d61",
-    borderRadius: "10px",
-    padding: "20px",
-  },
-  logScroll: {
-    height: "200px",
-    overflowY: "auto",
-    border: "1px solid #003a47",
-    padding: "10px",
-    borderRadius: "8px",
-  },
-};
