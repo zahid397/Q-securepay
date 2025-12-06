@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ShieldCheck, AlertTriangle } from 'lucide-react'; // Icons
 
+const API_BASE = "https://q-securepay.onrender.com"; // 🔥 Live backend URL
+
 const TransferForm = ({ addLog }) => {
   const [formData, setFormData] = useState({ source: '', dest: '', amount: '' });
   const [loading, setLoading] = useState(false);
@@ -16,11 +18,12 @@ const TransferForm = ({ addLog }) => {
     if (!formData.source) return;
     try {
       addLog(`Analyzing wallet: ${formData.source}...`);
-      // লজিক্যাল: ব্যাকএন্ডের URL
-      const res = await axios.post('http://127.0.0.1:8000/api/analyze-risk', {
+
+      const res = await axios.post(`${API_BASE}/api/analyze-risk`, {
         wallet_id: formData.source,
         amount: parseFloat(formData.amount || 0)
       });
+
       setRiskData(res.data);
       addLog(`Risk Analysis Complete. Score: ${res.data.score}`, res.data.score > 50 ? 'error' : 'info');
     } catch (err) {
@@ -34,15 +37,15 @@ const TransferForm = ({ addLog }) => {
     setLoading(true);
 
     try {
-      // প্রথমে রিস্ক চেক অটোমেটিক হবে ব্যাকএন্ডে, তবুও আমরা UI তে দেখাচ্ছি
-      const res = await axios.post('http://127.0.0.1:8000/api/transfer', {
+      const res = await axios.post(`${API_BASE}/api/transfer`, {
         source_wallet: formData.source,
         dest_wallet: formData.dest,
         amount: parseFloat(formData.amount)
       });
-      
+
       addLog(`SUCCESS: ${res.data.message}`, 'info');
       alert("Transfer Successful! ✅");
+
     } catch (err) {
       const errMsg = err.response?.data?.detail?.message || "Transfer Failed";
       addLog(`BLOCKED: ${errMsg}`, 'error');
@@ -64,7 +67,7 @@ const TransferForm = ({ addLog }) => {
             name="source" 
             placeholder="Ex: J9... (Qubic ID)" 
             onChange={handleChange} 
-            onBlur={checkRisk} // ফোকাস সরালে অটো চেক করবে
+            onBlur={checkRisk}
           />
         </div>
 
