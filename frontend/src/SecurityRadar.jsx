@@ -1,15 +1,18 @@
 import React from "react";
-import { Radar } from "react-chartjs-2";
 import {
+  Radar,
   Chart as ChartJS,
   RadialLinearScale,
   PointElement,
   LineElement,
   Filler,
   Tooltip,
-  Legend,
+  Legend
 } from "chart.js";
 
+import { Radar as RadarChart } from "react-chartjs-2";
+
+// chart.js register
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -21,33 +24,28 @@ ChartJS.register(
 
 const SecurityRadar = ({ riskScore }) => {
   const data = {
-    labels: ["Transactions", "Age", "Flags", "Velocity", "Trust"],
+    labels: ["Wallet Age", "Activity", "Flags", "Incoming", "Outgoing"],
     datasets: [
       {
-        label: "Risk Metrics",
+        label: "Risk Profile",
         data: [
-          Math.random() * riskScore,
-          Math.random() * riskScore,
-          Math.random() * riskScore,
-          Math.random() * riskScore,
-          Math.random() * riskScore,
+          riskScore,
+          Math.max(10, riskScore - 20),
+          Math.min(100, riskScore + 10),
+          40,
+          70,
         ],
-        backgroundColor: "rgba(0, 255, 255, 0.3)",
-        borderColor: "cyan",
+        backgroundColor: "rgba(0, 255, 255, 0.2)",
+        borderColor: "#00eaff",
         borderWidth: 2,
       },
     ],
   };
 
   return (
-    <div style={{
-      background: "rgba(0, 20, 30, 0.5)",
-      border: "1px solid #004d61",
-      padding: "20px",
-      borderRadius: "12px"
-    }}>
-      <h3 style={{ color: "cyan", marginBottom: "10px" }}>Threat Radar</h3>
-      <Radar data={data} />
+    <div style={{ background: "#001018", padding: "20px", borderRadius: "10px" }}>
+      <h3 style={{ color: "#00eaff", marginBottom: "10px" }}>Risk Radar</h3>
+      <RadarChart data={data} />
     </div>
   );
 };
