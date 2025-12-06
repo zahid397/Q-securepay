@@ -1,44 +1,154 @@
-Q-SecurePay 🛡️
-### Intelligent Transaction Guard for Qubic Blockchain
+# 🚀 Q-SecurePay — AI-Powered Fraud Detection for Qubic Network  
 
-**Built for International Lablab.ai Hackathon**
+**Q-SecurePay** is an intelligent real-time transaction security engine for the Qubic blockchain.  
+It monitors wallet activity, calculates AI-driven risk scores, blocks suspicious transfers, and sends instant alerts to protect users from scams and fraud.
 
-Q-SecurePay is a security layer for the Qubic ecosystem that prevents scam transfers and high-risk wallet interactions using real-time analysis.
-
----
-
-## 🚀 Features
-- **Real-time Risk Scoring:** Analyzes wallet age, balance, and history before transfer.
-- **Auto-Block Engine:** Automatically blocks transactions with a risk score > 75.
-- **Telegram Alerts:** Admins get instant notifications of suspicious activities.
-- **Cyberpunk UI:** Modern, dark-themed interface for seamless user experience.
+🔗 **Live Demo:**  
+Backend: https://q-securepay.onrender.com  
+Frontend: https://securepay.vercel.app  
 
 ---
 
-## 🛠️ Tech Stack
-- **Backend:** Python (FastAPI), Asyncio
-- **Frontend:** React.js, Vite
-- **Blockchain:** Qubic RPC Integration
-- **Tools:** Telegram Bot API, Axios
+## ⭐ Features  
+- 🔍 **Real-time wallet risk scoring**  
+- 🧠 **AI-powered fraud analysis**  
+- 🚫 **Auto-block high-risk transactions**  
+- ⚠️ **Suspicious activity detection**  
+- 📲 **Instant Telegram alerts**  
+- 📊 **Transaction insights dashboard**  
+- 🟢🟡🔴 Wallet trust-level indicators  
+- ⚡ FastAPI backend + Real-time frontend  
 
 ---
 
-## ⚡ How to Run
+## 🧠 Short Pitch (Hackathon Summary)
+**Q-SecurePay** is an AI-powered fraud detection layer for the Qubic blockchain.  
+It analyzes wallet behavior, calculates a real-time risk score, blocks high-risk transfers,  
+and sends instant Telegram alerts — delivering end-to-end protection for crypto transactions.
 
-### 1. Backend Setup
+---
+
+## 🏗 System Architecture
+──┐
+               │        USER          │
+               └──────────┬───────────┘
+                          │
+                          ▼
+                ┌──────────────────┐
+                │   Frontend UI    │
+                │ (Next.js / React)│
+                └──────────┬───────┘
+                          │ REST API
+                          ▼
+                 ┌──────────────────┐
+                 │    Backend API   │
+                 │    (FastAPI)     │
+                 └───────┬──────────┘
+                         │
+  ┌──────────────────────┼──────────────────────────┐
+  ▼                      ▼                          ▼
+
+┌────────────┐      ┌────────────────┐        ┌─────────────────┐ │ Risk Engine│      │Wallet Analyzer │        │Qubic RPC Checker │ │ AI Scoring │      │History Lookup  │        │Live Transaction  │ └─────┬──────┘      └───────┬────────┘        └────────┬────────┘ │                     │                           │ └───────────────┬────┴──────────────┬────────────┘ ▼                   ▼ ┌─────────────────┐   ┌────────────────────┐ │ Allow Transfer  │   │ Block & Alert User │ └─────────────────┘   └────────────────────┘
+
+▼
+        🔔 Telegram Instant Alerts
+
+---
+
+## 🧪 Risk Score Logic
+| Risk Factor | Weight |
+|-------------|--------|
+| New wallet (< 30 days) | +20 |
+| High outgoing tx count | +25 |
+| Known scammer flagged | +40 |
+| Sudden balance drop | +25 |
+| Too many approvals | +15 |
+| Unusual transfer pattern | +30 |
+
+### Risk Levels:
+- **0–30 → 🟢 SAFE**  
+- **31–70 → 🟡 WARNING**  
+- **71–100 → 🔴 DANGER (Auto Block)**  
+
+---
+
+## 📡 API Endpoints  
+### `GET /api/risk/{wallet}`
+Returns risk score + analysis.
+
+### `POST /api/tx/validate`
+Validates + approves/blocks transactions.
+
+### `POST /api/alert/send`
+Sends Telegram alerts.
+
+---
+
+## 📸 Screenshots  
+(Add here once you upload images to GitHub)
+
+---
+
+## 🛠 Tech Stack  
+- **Backend:** FastAPI, Python  
+- **Frontend:** Next.js / React  
+- **Database:** JSON/Firebase/SQLite (optional)  
+- **AI Engine:** Custom Logic / LLM Hooks  
+- **Alerts:** Telegram Bot  
+- **Blockchain:** Qubic RPC  
+
+---
+
+## ▶ Local Installation
+
 ```bash
+git clone https://github.com/your-repo/Q-SecurePay
 cd Q-SecurePay
 pip install -r requirements.txt
-uvicorn main:Server runs on: https://www.google.com/search?q=http://127.0.0.1:8000app --reload
-2. Frontend Setup
+uvicorn backend.main:app --reload
+
+Frontend:
+
 cd frontend
 npm install
 npm run dev
-Client runs on: http://localhost:5173
-⚠️ Environment Variables
-Create a .env file in the root directory:
-QUBIC_RPC_URL="[https://api.qubic.org/v1](https://api.qubic.org/v1)"
-TELEGRAM_BOT_TOKEN="your_token"
-TELEGRAM_CHAT_ID="your_id"
-👨‍💻 Team
-Developed by Zahid Hasan & Team.
+
+
+---
+
+🔮 Future Scope
+
+Behavior-based ML fraud model
+
+Wallet reputation indexing
+
+Community scam-reporting
+
+Integration into Qubic dApps
+
+Multi-chain support
+
+
+
+---
+
+🏆 Why This Project Matters
+
+Qubic ecosystem lacks a security layer.
+Scams, phishing wallets, and suspicious transfers increase daily.
+Q-SecurePay solves this through:
+
+✔ real-time analysis
+✔ AI reasoning
+✔ instant alerts
+✔ automated protection
+
+Making Qubic safer for millions of users.
+
+
+---
+
+👨‍💻 Built by
+
+Zahid Hasan
+For Qubic + Lablab Hackathon 2025
