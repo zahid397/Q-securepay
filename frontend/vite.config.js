@@ -1,14 +1,21 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
-  root: ".", // tells Vite this folder has index.html
+
+  // 👉 VERY IMPORTANT
+  root: ".",                          // index.html এই root এ আছে
+  publicDir: "public",
+
   build: {
     outDir: "dist",
     emptyOutDir: true,
     rollupOptions: {
-      input: "./index.html", // <-- main fix
-    },
-  },
+      input: {
+        main: resolve(__dirname, "index.html")
+      }
+    }
+  }
 });
