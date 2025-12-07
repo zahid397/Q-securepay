@@ -5,7 +5,7 @@ It monitors wallet activity, calculates AI-driven risk scores, blocks suspicious
 
 🔗 **Live Demo:**  
 Backend: https://q-securepay.onrender.com  
-Frontend: https://securepay.vercel.app  
+Frontend: https://https://qsp-frontend.vercel.app
 
 ---
 
